@@ -4,9 +4,9 @@
 #####################################################################################
 #                                   IMPORTS                                         #
 #####################################################################################
-#import the turtle module
-#import the Client class from the turtle_chat_client module
-#Finally, from the turtle_chat_widgets module, import two classes: Button and TextInput
+import turtle
+from turtle_chat_client.py import Client
+from turtle_chat_widgets.py import Button, TextInput
 #####################################################################################
 #####################################################################################
 
@@ -38,6 +38,29 @@
 #####################################################################################
 #####################################################################################
 
+class TextBox(TextInput):
+
+    def draw_box(self):
+
+        self.draw = turtle.clone()
+        self.draw.hideturtle()
+        self.draw.penup()
+        self.draw.goto(pos)
+        self.draw.pendown()
+        self.draw.goto(width,heigth)
+        self.draw.goto(-width,heigth)
+        self.draw.goto(-width,-heigth)
+        self.draw.goto(width,-heigth)
+        self.draw.goto(width,heigth)
+
+        self.draw.stamp()
+        print('draw_box works')
+
+    def write_msg(self):
+
+        self.writer.write(self.new_msg + "\r")
+
+
 #####################################################################################
 #                                  SendButton                                       #
 #####################################################################################
@@ -56,7 +79,26 @@
 #####################################################################################
 #####################################################################################
 
+class SendButton(Button, Client):
 
+    #def __init__(self, view=None):
+
+        
+    def fun(self, x=None, y=None):
+
+        if x is None:
+            x=()
+            self.turtle.append(x)
+
+        if y is None:
+            y=()
+            self.turtle.append(y)
+            
+        if self.onclick() == x and self.onclick() == y:
+            self.send()
+            print('Message sent')
+
+            
 ##################################################################
 #                             View                               #
 ##################################################################

@@ -26,7 +26,7 @@ class Button(metaclass=ABCMeta):
         if my_turtle is None :
             #If no turtle given, create new one
             self.turtle=turtle.clone()
-        else:
+            else:
             self.turtle=my_turtle
 
         self.turtle.speed(0)
@@ -101,7 +101,6 @@ class TextInput(metaclass=ABCMeta):
         will draw textbox.  Can use instance attributes,
         pos, width, and height.
         '''
-        pass
 
     @abstractmethod
     def write_msg(self):
@@ -116,7 +115,6 @@ class TextInput(metaclass=ABCMeta):
         Side effect method - no inputs or outputs, but
         new_msg may be changed.
         '''
-        pass
 
     def clear_msg(self):
         '''
