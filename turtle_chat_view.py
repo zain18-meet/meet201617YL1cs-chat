@@ -1,12 +1,13 @@
 #2016-2017 PERSONAL PROJECTS: TurtleChat!
 #WRITE YOUR NAME HERE!
+'Zain'
 
 #####################################################################################
 #                                   IMPORTS                                         #
 #####################################################################################
 import turtle
-from turtle_chat_client.py import Client
-from turtle_chat_widgets.py import Button, TextInput
+from turtle_chat_client import Client
+from turtle_chat_widgets import Button, TextInput
 #####################################################################################
 #####################################################################################
 
@@ -45,21 +46,24 @@ class TextBox(TextInput):
         self.draw = turtle.clone()
         self.draw.hideturtle()
         self.draw.penup()
-        self.draw.goto(pos)
+        self.draw.goto(self.pos)
+        self.draw.goto(self.width/2,0)
         self.draw.pendown()
-        self.draw.goto(width,heigth)
-        self.draw.goto(-width,heigth)
-        self.draw.goto(-width,-heigth)
-        self.draw.goto(width,-heigth)
-        self.draw.goto(width,heigth)
-
+        self.draw.goto(-self.width/2,0)
+        self.draw.goto(-self.width/2,-self.height)
+        self.draw.goto(self.width/2,-self.height)
+        self.draw.goto(self.width/2,0)
+        
         self.draw.stamp()
         print('draw_box works')
 
     def write_msg(self):
 
-        self.writer.write(self.new_msg + "\r")
+        self.writer.write(self.new_msg)
 
+        if self.writer ==  -self.width/2-10:
+
+            print('New Line')
 
 #####################################################################################
 #                                  SendButton                                       #
@@ -81,7 +85,7 @@ class TextBox(TextInput):
 
 class SendButton(Button, Client):
 
-    #def __init__(self, view=None):
+    def __init__(self, view=None):
 
         
     def fun(self, x=None, y=None):

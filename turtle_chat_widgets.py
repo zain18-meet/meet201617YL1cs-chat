@@ -26,7 +26,7 @@ class Button(metaclass=ABCMeta):
         if my_turtle is None :
             #If no turtle given, create new one
             self.turtle=turtle.clone()
-            else:
+        else:
             self.turtle=my_turtle
 
         self.turtle.speed(0)
