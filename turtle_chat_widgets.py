@@ -102,6 +102,8 @@ class TextInput(metaclass=ABCMeta):
         pos, width, and height.
         '''
 
+        pass
+
     @abstractmethod
     def write_msg(self):
         '''
@@ -115,6 +117,8 @@ class TextInput(metaclass=ABCMeta):
         Side effect method - no inputs or outputs, but
         new_msg may be changed.
         '''
+        
+        pass
 
     def clear_msg(self):
         '''

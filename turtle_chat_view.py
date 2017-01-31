@@ -46,7 +46,6 @@ class TextBox(TextInput):
         self.draw = turtle.clone()
         self.draw.hideturtle()
         self.draw.penup()
-        self.draw.goto(self.pos)
         self.draw.goto(self.width/2,0)
         self.draw.pendown()
         self.draw.goto(-self.width/2,0)
@@ -59,11 +58,13 @@ class TextBox(TextInput):
 
     def write_msg(self):
 
+        self.writer.clear()
+
         self.writer.write(self.new_msg)
 
-        if self.writer ==  -self.width/2-10:
+##        if self.writer == -self.width/2-10:
 
-            print('New Line')
+##            print('New Line')
 
 #####################################################################################
 #                                  SendButton                                       #
@@ -85,9 +86,10 @@ class TextBox(TextInput):
 
 class SendButton(Button, Client):
 
-    def __init__(self, view=None):
+##    def __init__(self, view=None):
 
         
+
     def fun(self, x=None, y=None):
 
         if x is None:
@@ -127,8 +129,12 @@ class View:
         #Store the username and partner_name into the instance.
         ###
 
+        self.usename = username
+        self.partner_name = partner_name
+        
         #Make a new client object and store it in this instance.
 
+        self.my_client = Client(hostname = 'Termizaintor')
         #Set screen dimensions using turtle.setup
         #You can get help on this function, as with other turtle functions,
         #by typing
@@ -138,13 +144,16 @@ class View:
         #
         #at the Python shell.
 
+        turtle.setup(_SCREEN_WIDTH)
+        turtle.setup(_SCREEN_HEIGHT)
+        
         #This list will store all of the messages.
         #You can add strings to the front of the list using
         #   self.msg_queue.insert(0,a_msg_string)
         #or at the end of the list using
         #   self.msg_queue.append(a_msg_string)
         self.msg_queue=[]
-
+        
         ###
         #Create one turtle object for each message to display.
         #You can use the clear() and write() methods to erase
@@ -171,9 +180,14 @@ class View:
         It should call self.display_msg() to cause the message
         display to be updated.
         '''
-        pass
+        
+        self.send()
+        self.clear_msg()
+        self.display_msg()
+        self.msg_queue.append()
 
     def get_msg(self):
+        
         return self.textbox.get_msg()
 
     def setup_listeners(self):
@@ -187,7 +201,8 @@ class View:
 
         Then, it can call turtle.listen()
         '''
-        pass
+
+        self.snd_btn = Button()
 
     def msg_received(self,msg):
         '''
