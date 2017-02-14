@@ -47,6 +47,10 @@ class TextBox(TextInput):
 
         super(TextBox, self).__init__(pos = (0,-50))
 
+        self.font = ('Courier',14,'bold')
+
+        self.msg_box()
+
     def draw_box(self):
 
         self.draw = turtle.clone()
@@ -62,13 +66,26 @@ class TextBox(TextInput):
         self.draw.goto(-self.width/2+self.pos[0],self.pos[1])
         self.draw.goto(-self.width/2+self.pos[0],self.pos[1]-self.height)
 
-        print('draw_box works')
+    def msg_box(self):
+
+        self.msg_box = turtle.clone()
+        self.msg_box.pencolor('white')
+        self.msg_box.speed(0)
+        self.msg_box.pensize(5)
+        self.msg_box.hideturtle()
+        self.msg_box.penup()
+        self.msg_box.goto(-self.width/2+self.pos[0],100)
+        self.msg_box.pendown()
+        self.msg_box.goto(self.width/2+self.pos[0],100)
+        self.msg_box.goto(self.width/2+self.pos[0],250)
+        self.msg_box.goto(-self.width/2+self.pos[0],250)
+        self.msg_box.goto(-self.width/2+self.pos[0],100)
 
     def write_msg(self):
-
+        
         self.writer.clear()
         self.writer.pencolor("white")
-        self.writer.write(self.new_msg , font = ('Times New Roman',12,'normal'))
+        self.writer.write(self.new_msg , font = self.font)
 
 #####################################################################################
 #                                  SendButton                                       #
@@ -92,12 +109,20 @@ class SendButton(Button):
 
     def __init__(self, view):
 
-        super(SendButton,self).__init__(pos = (0,-250))
-        self.turtle.color("white")
-##        turtle.register_shape("send_btn2.gif")
-##        self.turtle.shape("send_btn2.gif")
+        super(SendButton,self).__init__(pos = (0,-200))
+        self.turtle.color("grey")
 
         self.view = view
+        self.Write_Send()
+
+    def Write_Send(self):
+
+        self.wrt_snd = turtle.clone()
+        self.wrt_snd.penup()
+        self.wrt_snd.pencolor("white")
+        self.wrt_snd.hideturtle()
+        self.wrt_snd.goto(-30,-212)
+        self.wrt_snd.write('SEND', font = ('Courier',17,'bold'))
 
     def fun(self, x=None, y=None):
 
@@ -119,7 +144,7 @@ class View:
     _SCREEN_HEIGHT=600
     _LINE_SPACING=round(_SCREEN_HEIGHT/2/(_MSG_LOG_LENGTH+1))
 
-    def __init__(self,username='Me',partner_name='Partner'):
+    def __init__(self,username='Me',partner_name='Anonymous'):
         '''
         :param username: the name of this chat user
         :param partner_name: the name of the user you are chatting with
@@ -147,8 +172,8 @@ class View:
         turtle.setup( width = self._SCREEN_WIDTH, height = self._SCREEN_HEIGHT )
 
         self.background = turtle.clone()
-        turtle.register_shape("NYCBG.gif")
-        self.background.shape("NYCBG.gif")
+        turtle.register_shape("NYCBG4.gif")
+        self.background.shape("NYCBG4.gif")
         self.background.goto(0,10)
         
         #This list will store all of the messages.
@@ -161,31 +186,25 @@ class View:
 
         self.textbox = TextBox()
         self.send_btn = SendButton(self)
+
+        self.turtles = []
+        
         ###
         #Create one turtle object for each message to display.
         #You can use the clear() and write() methods to erase
         #and write messages for each
         ###
 
-        self.display = turtle.clone()
+##        for msg in msg_queue:
+##
+##            self.turtles.append(self.display = turtle.clone())
+        
+        self.display = turtle.clone()    
         self.display.penup()
         self.display.pencolor('white')
         self.display.speed(0)
         self.display.hideturtle()
-        self.display.goto(-self.textbox.width/2+10+self.textbox.pos[0],200)
-
-        self.msg_box = turtle.clone()
-        self.msg_box.pencolor('white')
-        self.msg_box.speed(0)
-        self.msg_box.pensize(5)
-        self.msg_box.hideturtle()
-        self.msg_box.penup()
-        self.msg_box.goto(-self.textbox.width/2+self.textbox.pos[0],120)
-        self.msg_box.pendown()
-        self.msg_box.goto(self.textbox.width/2+self.textbox.pos[0],120)
-        self.msg_box.goto(self.textbox.width/2+self.textbox.pos[0],220)
-        self.msg_box.goto(-self.textbox.width/2+self.textbox.pos[0],220)
-        self.msg_box.goto(-self.textbox.width/2+self.textbox.pos[0],120)
+        self.display.goto(-self.textbox.width/2+10+self.textbox.pos[0],170)
         
         ###
         #Create a TextBox instance and a SendButton instance and
@@ -243,11 +262,12 @@ class View:
         :param msg: a string containing the message received
                     - this should be displayed on the screen
         '''
+        
         print(msg) #Debug - print message
         show_this_msg=self.partner_name+' says:\r'+ msg
         #Add the message to the queue either using insert (to put at the beginning)
         #or append (to put at the end).
-        self.msg_queue.insert(0,self.textbox.new_msg)
+        self.msg_queue.insert(0,show_this_msg)
         #Then, call the display_msg method to update the display
         self.display_msg()
 
@@ -256,7 +276,8 @@ class View:
         This method should update the messages displayed in the screen.
         You can get the messages you want from self.msg_queue
         '''
-        self.display.write(self.msg_queue[0], font = ('Times New Roman',12,'normal'))
+        self.display.clear()
+        self.display.write(self.msg_queue[0], font = self.textbox.font)
         
 ##############################################################
 ##############################################################
