@@ -77,8 +77,8 @@ class TextBox(TextInput):
         self.msg_box.goto(-self.width/2+self.pos[0],100)
         self.msg_box.pendown()
         self.msg_box.goto(self.width/2+self.pos[0],100)
-        self.msg_box.goto(self.width/2+self.pos[0],250)
-        self.msg_box.goto(-self.width/2+self.pos[0],250)
+        self.msg_box.goto(self.width/2+self.pos[0],230)
+        self.msg_box.goto(-self.width/2+self.pos[0],230)
         self.msg_box.goto(-self.width/2+self.pos[0],100)
 
     def write_msg(self):
@@ -186,8 +186,6 @@ class View:
 
         self.textbox = TextBox()
         self.send_btn = SendButton(self)
-
-        self.turtles = []
         
         ###
         #Create one turtle object for each message to display.
@@ -250,7 +248,7 @@ class View:
         Then, it can call turtle.listen()
         '''
 
-        turtle.onkeypress( self.send_btn.fun(), 'return' )
+        turtle.onkeypress( self.send_btn.fun, 'Return' )
         turtle.listen()
 
     def msg_received(self,msg):
