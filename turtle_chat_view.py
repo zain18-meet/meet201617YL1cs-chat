@@ -2,44 +2,57 @@
 #WRITE YOUR NAME HERE!
 'Zain'
 
-#####################################################################################
-#                                   IMPORTS                                         #
-#####################################################################################
-
 import turtle
 from turtle_chat_client import Client
 from turtle_chat_widgets import Button, TextInput
 
-#####################################################################################
-#####################################################################################
+class start_menu:
 
-#####################################################################################
-#                                   TextBox                                         #
-#####################################################################################
-#Make a class called TextBox, which will be a subclass of TextInput.
-#Because TextInput is an abstract class, you must implement its abstract
-#methods.  There are two:
-#
-#draw_box
-#write_msg
-#
-#Hints:
-#1. in draw_box, you will draw (or stamp) the space on which the user's input
-#will appear.
-#
-#2. All TextInput objects have an internal turtle called writer (i.e. self will
-#   have something called writer).  You can write new text with it using code like
-#
-#   self.writer.write(a_string_variable)
-#
-#   and you can erase that text using
-#
-#   self.writer.clear()
-#
-#3. If you want to make a newline character (i.e. go to the next line), just add
-#   \r to your string.  Test it out at the Python shell for practice
-#####################################################################################
-#####################################################################################
+    _SCREEN_WIDTH=500
+    _SCREEN_HEIGHT=600
+
+    def __init__(self):
+
+        turtle.setup( width = self._SCREEN_WIDTH, height = self._SCREEN_HEIGHT )
+
+        self.background()
+        self.StartButton()
+        self.Logo()
+        self.Write_Start()
+
+    def background(self):
+
+        self.background = turtle.clone()
+        turtle.register_shape('STARTMENU.gif')
+        self.background.penup()
+        self.background.goto(0,0)
+        self.background.shape('STARTMENU.gif')
+
+    def StartButton(self):
+
+        self.button = turtle.clone()
+        self.button.shape('square')
+        self.button.penup()
+        self.button.shapesize(2,10)
+        self.button.color("white")
+        self.button.goto(0,-50)
+
+    def Logo(self):
+
+        self.logo = turtle.clone()
+        turtle.register_shape('Logo.gif')
+        self.logo.penup()
+        self.logo.goto(0,0)
+        self.logo.shape('Logo.gif')
+
+    def Write_Start(self):
+
+        self.wrt_strt = turtle.clone()
+        self.wrt_strt.penup()
+        self.wrt_strt.pencolor("black")
+        self.wrt_strt.hideturtle()
+        self.wrt_strt.goto(-30,-212)
+        self.wrt_strt.write('START', font = ('Courier',17,'bold'))
 
 class TextBox(TextInput):
 
@@ -77,8 +90,10 @@ class TextBox(TextInput):
         self.msg_box.goto(-self.width/2+self.pos[0],100)
         self.msg_box.pendown()
         self.msg_box.goto(self.width/2+self.pos[0],100)
-        self.msg_box.goto(self.width/2+self.pos[0],230)
-        self.msg_box.goto(-self.width/2+self.pos[0],230)
+        self.msg_box.pensize(2)
+        self.msg_box.goto(self.width/2+self.pos[0],200)
+        self.msg_box.goto(-self.width/2+self.pos[0],200)
+        self.msg_box.pensize(2)
         self.msg_box.goto(-self.width/2+self.pos[0],100)
 
     def write_msg(self):
@@ -86,24 +101,15 @@ class TextBox(TextInput):
         self.writer.clear()
         self.writer.pencolor("white")
         self.writer.write(self.new_msg , font = self.font)
+        self.my_pos = self.writer.pos()
+        self.x_pos = self.my_pos[0]
 
-#####################################################################################
-#                                  SendButton                                       #
-#####################################################################################
-#Make a class called SendButton, which will be a subclass of Button.
-#Button is an abstract class with one abstract method: fun.
-#fun gets called whenever the button is clicked.  It's jobs will be to
-#
-# 1. send a message to the other chat participant - to do this,
-#    you will need to call the send method of your Client instance
-# 2. update the messages that you see on the screen
-#
-#HINT: You may want to override the __init__ method so that it takes one additional
-#      input: view.  This will be an instance of the View class you will make next
-#      That class will have methods inside of it to help
-#      you send messages and update message displays.
-#####################################################################################
-#####################################################################################
+        if self.x_pos >= 90:
+
+            self.writer.write(self.new_msg + "\r", font = self.font)
+
+        else:
+            self.writer.write(self.new_msg , font = self.font)
 
 class SendButton(Button):
 
@@ -123,20 +129,12 @@ class SendButton(Button):
         self.wrt_snd.hideturtle()
         self.wrt_snd.goto(-30,-212)
         self.wrt_snd.write('SEND', font = ('Courier',17,'bold'))
+        self.wrt_snd.onclick(self.fun)
+        turtle.listen()
 
     def fun(self, x=None, y=None):
 
         self.view.send_msg()
-
-##################################################################
-#                             View                               #
-##################################################################
-#Make a new class called View.  It does not need to have a parent
-#class mentioned explicitly.
-#
-#Read the comments below for hints and directions.
-##################################################################
-##################################################################
 
 class View:
     _MSG_LOG_LENGTH=5 #Number of messages to retain in view
@@ -192,17 +190,13 @@ class View:
         #You can use the clear() and write() methods to erase
         #and write messages for each
         ###
-
-##        for msg in msg_queue:
-##
-##            self.turtles.append(self.display = turtle.clone())
         
         self.display = turtle.clone()    
         self.display.penup()
         self.display.pencolor('white')
         self.display.speed(0)
         self.display.hideturtle()
-        self.display.goto(-self.textbox.width/2+10+self.textbox.pos[0],170)
+        self.display.goto(-self.textbox.width/2+10+self.textbox.pos[0],180)
         
         ###
         #Create a TextBox instance and a SendButton instance and
@@ -286,17 +280,28 @@ class View:
 #it once you have a working view, trying to run you chat#
 #view in different ways.                                #
 #########################################################
+        
 if __name__ == '__main__':
-    my_view=View()
+    my_start_menu = start_menu()
     _WAIT_TIME=200 #Time between check for new message, ms
-    def check() :
-        msg_in=my_view.my_client.receive()
-        if not(msg_in is None):
-            if msg_in==my_view.my_client._END_MSG:
-                print('End message received')
-                sys.exit()
-            else:
-                my_view.msg_received(msg_in)
-        turtle.ontimer(check,_WAIT_TIME) #Check recursively
-    check()
-    turtle.mainloop()
+
+    def Start(self, x=None, y=None):
+        
+        my_view=View()
+        
+        def check() :
+            msg_in=my_view.my_client.receive()
+            if not(msg_in is None):
+                if msg_in==my_view.my_client._END_MSG:
+                    print('End message received')
+                    sys.exit()
+                else:
+                    my_view.textbox.msg_box.goto(my_view.textbox.width/2+my_view.textbox.pos[0],100)
+                    my_view.textbox.msg_box.goto(my_view.textbox.width/2+my_view.textbox.pos[0],230)
+                    my_view.textbox.msg_box.goto(-my_view.textbox.width/2+my_view.textbox.pos[0],230)
+                    my_view.textbox.msg_box.goto(-my_view.textbox.width/2+my_view.textbox.pos[0],100)
+                    my_view.msg_received(msg_in)
+            turtle.ontimer(check,_WAIT_TIME) #Check recursively
+        check()
+    my_start_menu.button.onclick(Start)
+turtle.mainloop()

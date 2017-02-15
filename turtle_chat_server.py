@@ -35,7 +35,7 @@ def chat_server(HOST=DEFAULT_HOST, PORT=DEFAULT_PORT):
                 sockfd, addr = server_socket.accept()
                 SOCKET_LIST.append(sockfd)
                 print("Client (%s, %s) connected" % addr)
-                broadcast(server_socket, sockfd, "[%s:%s] entered our chat session\n" % addr)
+                broadcast(server_socket, sockfd, "Client (%s, %s) entered our chat session\n" % addr)
 
             # a message from a client, not a new connection
             else:
