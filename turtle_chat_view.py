@@ -6,14 +6,14 @@ import turtle
 from turtle_chat_client import Client
 from turtle_chat_widgets import Button, TextInput
 
-class start_menu:
+class Start_Menu:
 
     _SCREEN_WIDTH=500
     _SCREEN_HEIGHT=600
 
     def __init__(self):
 
-        turtle.setup( width = self._SCREEN_WIDTH, height = self._SCREEN_HEIGHT )
+        turtle.setup( self._SCREEN_WIDTH, self._SCREEN_HEIGHT )
 
         self.background()
         self.StartButton()
@@ -35,7 +35,7 @@ class start_menu:
         self.button.penup()
         self.button.shapesize(2,10)
         self.button.color("white")
-        self.button.goto(0,-50)
+        self.button.goto(0,-200)
 
     def Logo(self):
 
@@ -49,7 +49,6 @@ class start_menu:
 
         self.wrt_strt = turtle.clone()
         self.wrt_strt.penup()
-        self.wrt_strt.pencolor("black")
         self.wrt_strt.hideturtle()
         self.wrt_strt.goto(-30,-212)
         self.wrt_strt.write('START', font = ('Courier',17,'bold'))
@@ -62,7 +61,7 @@ class TextBox(TextInput):
 
         self.font = ('Courier',14,'bold')
 
-        self.msg_box()
+        self.Msg_box()
 
     def draw_box(self):
 
@@ -79,7 +78,7 @@ class TextBox(TextInput):
         self.draw.goto(-self.width/2+self.pos[0],self.pos[1])
         self.draw.goto(-self.width/2+self.pos[0],self.pos[1]-self.height)
 
-    def msg_box(self):
+    def Msg_box(self):
 
         self.msg_box = turtle.clone()
         self.msg_box.pencolor('white')
@@ -90,10 +89,10 @@ class TextBox(TextInput):
         self.msg_box.goto(-self.width/2+self.pos[0],100)
         self.msg_box.pendown()
         self.msg_box.goto(self.width/2+self.pos[0],100)
-        self.msg_box.pensize(2)
         self.msg_box.goto(self.width/2+self.pos[0],200)
+        self.msg_box.pensize(1)
         self.msg_box.goto(-self.width/2+self.pos[0],200)
-        self.msg_box.pensize(2)
+        self.msg_box.pensize(5)
         self.msg_box.goto(-self.width/2+self.pos[0],100)
 
     def write_msg(self):
@@ -147,49 +146,19 @@ class View:
         :param username: the name of this chat user
         :param partner_name: the name of the user you are chatting with
         '''
-        ###
-        #Store the username and partner_name into the instance.
-        ###
 
         self.username = username
         self.partner_name = partner_name
         
-        #Make a new client object and store it in this instance.
-
         self.my_client = Client()
-        
-        #Set screen dimensions using turtle.setup
-        #You can get help on this function, as with other turtle functions,
-        #by typing
-        #
-        #   import turtle
-        #   help(turtle.setup)
-        #
-        #at the Python shell.
-
-        turtle.setup( width = self._SCREEN_WIDTH, height = self._SCREEN_HEIGHT )
-
-        self.background = turtle.clone()
-        turtle.register_shape("NYCBG4.gif")
-        self.background.shape("NYCBG4.gif")
-        self.background.goto(0,10)
-        
-        #This list will store all of the messages.
-        #You can add strings to the front of the list using
-        #   self.msg_queue.insert(0,a_msg_string)
-        #or at the end of the list using
-        #   self.msg_queue.append(a_msg_string)
         
         self.msg_queue=[]
 
+        self.Chat_Background()
+        
         self.textbox = TextBox()
         self.send_btn = SendButton(self)
-        
-        ###
-        #Create one turtle object for each message to display.
-        #You can use the clear() and write() methods to erase
-        #and write messages for each
-        ###
+        self.Display_turtle_setup()
         
         self.display = turtle.clone()    
         self.display.penup()
@@ -197,18 +166,44 @@ class View:
         self.display.speed(0)
         self.display.hideturtle()
         self.display.goto(-self.textbox.width/2+10+self.textbox.pos[0],180)
-        
-        ###
-        #Create a TextBox instance and a SendButton instance and
-        #Store them inside of this instance
-        ###
-
-        ###
-        #Call your setup_listeners() function, if you have one,
-        #and any other remaining setup functions you have invented.
-        ###
 
         self.setup_listeners()
+        turtle.listen()
+
+    def Chat_Background(self):
+
+        self.background = turtle.clone()
+        turtle.register_shape("NYCBG1.gif")
+        turtle.register_shape("NYCBG2.gif")
+        turtle.register_shape("NYCBG3.gif")
+        turtle.register_shape("NYCBG4.gif")
+        self.background.shape("NYCBG1.gif")
+        self.background.goto(0,10)
+
+    def Switch_bg1(self):
+
+        self.background.shape("NYCBG1.gif")
+
+    def Switch_bg2(self):
+
+        self.background.shape("NYCBG2.gif")
+
+    def Switch_bg3(self):
+
+        self.background.shape("NYCBG3.gif")
+
+    def Switch_bg4(self):
+
+        self.background.shape("NYCBG4.gif")
+
+    def Display_turtle_setup(self):
+
+        self.display = turtle.clone()    
+        self.display.penup()
+        self.display.pencolor('white')
+        self.display.speed(0)
+        self.display.hideturtle()
+        self.display.goto(-self.textbox.width/2+10+self.textbox.pos[0],180)
 
     def send_msg(self):
         '''
@@ -243,6 +238,10 @@ class View:
         '''
 
         turtle.onkeypress( self.send_btn.fun, 'Return' )
+        turtle.onkeypress(self.Switch_bg1, "Up")
+        turtle.onkeypress(self.Switch_bg2, "Right")
+        turtle.onkeypress(self.Switch_bg3, "Down")
+        turtle.onkeypress(self.Switch_bg4, "Left")
         turtle.listen()
 
     def msg_received(self,msg):
@@ -256,11 +255,8 @@ class View:
         '''
         
         print(msg) #Debug - print message
-        show_this_msg=self.partner_name+' says:\r'+ msg
-        #Add the message to the queue either using insert (to put at the beginning)
-        #or append (to put at the end).
+        show_this_msg=self.partner_name+':\r'+ msg
         self.msg_queue.insert(0,show_this_msg)
-        #Then, call the display_msg method to update the display
         self.display_msg()
 
     def display_msg(self):
@@ -268,6 +264,7 @@ class View:
         This method should update the messages displayed in the screen.
         You can get the messages you want from self.msg_queue
         '''
+        
         self.display.clear()
         self.display.write(self.msg_queue[0], font = self.textbox.font)
         
@@ -282,7 +279,7 @@ class View:
 #########################################################
         
 if __name__ == '__main__':
-    my_start_menu = start_menu()
+    my_start_menu = Start_Menu()
     _WAIT_TIME=200 #Time between check for new message, ms
 
     def Start(self, x=None, y=None):
