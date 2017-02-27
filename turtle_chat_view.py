@@ -19,6 +19,7 @@ class Start_Menu:
         self.StartButton()
         self.Logo()
         self.credits()
+        self.Info_button()
 
     def credits(self):
 
@@ -26,7 +27,7 @@ class Start_Menu:
         self.credits.pencolor('white')
         self.credits.hideturtle()
         self.credits.penup()
-        self.credits.goto(-220,-275)
+        self.credits.goto(-220,230)
         self.credits.write('Created by' + ':' + '\r' + 'Zain Al Qalawi', font = ('Courier',14,'bold'))
 
     def background(self):
@@ -40,11 +41,23 @@ class Start_Menu:
     def StartButton(self):
 
         self.button = turtle.clone()
-        self.button.shape('square')
+        self.button.color("white")
+        self.button.speed(0)
+        self.button.penup()
         self.button.goto(0,-200)
+        self.button.shape('square')
         self.button.penup()
         self.button.shapesize(2,10)
-        self.button.color("white")
+
+    def Info_button(self):
+
+        self.info_btn = turtle.clone()
+        self.info_btn.speed(0)
+        self.info_btn.penup()
+        self.info_btn.goto(0,-250)
+        self.info_btn.color("white")
+        self.info_btn.shape('square')
+        self.info_btn.shapesize(2,10)
 
     def Logo(self):
 
@@ -53,6 +66,42 @@ class Start_Menu:
         self.logo.penup()
         self.logo.goto(0,0)
         self.logo.shape('Logo.gif')
+
+class info_page():
+
+    def __init__(self):
+
+        self.background()
+        self.info()
+        self.Info_button2()
+
+    def background(self):
+
+        self.background = turtle.clone()
+        turtle.register_shape('STARTMENU.gif')
+        self.background.penup()
+        self.background.goto(0,0)
+        self.background.shape('STARTMENU.gif')
+
+    def info(self):
+
+        self.info = turtle.clone()
+        self.info.pencolor('white')
+        self.info.hideturtle()
+        self.info.penup()
+        self.info.goto(-220,-100)
+        self.text = "This chat engine is " + '\r' + "designed as a network" + '\r' + "where strangers talk to each other " + '\r' + "to sacred their anonymity." + '\r' + " It alows people to maintain privacy. " + '\r' + "The theme NYC is used since NYC is one" + '\r' + "of the busiest cities. There is a cultural " + '\r' + "concept within; that has the idea that " + '\r' + "'no matter who you pass on the streets," + '\r' + " you'll know nothing about them" + '\r' + "I hope you'll enjoy using it"
+        self.info.write(self.text, font = ('Courier',14,'bold'))
+
+    def Info_button2(self):
+
+        self.info_btn2 = turtle.clone()
+        self.info_btn2.speed(0)
+        self.info_btn2.penup()
+        self.info_btn2.goto(0,-200)
+        self.info_btn2.color("white")
+        self.info_btn2.shape('square')
+        self.info_btn2.shapesize(2,10)
 
 
 class TextBox(TextInput):
@@ -296,7 +345,14 @@ if __name__ == '__main__':
                     my_view.msg_received(msg_in)
             turtle.ontimer(check,_WAIT_TIME)
         check()
+
+    def Info_menu(x=None,y=None):
+
+        info_menu = info_page()
+
+        info_menu.info_btn2.onclick(Start)
     my_start_menu.button.onclick(Start)
+    my_start_menu.info_btn.onclick(Info_menu)
     turtle.onkeypress( Start, 'Return')
     turtle.listen()
 turtle.mainloop()
