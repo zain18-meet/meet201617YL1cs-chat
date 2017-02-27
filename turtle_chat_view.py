@@ -18,10 +18,10 @@ class Start_Menu:
         self.background()
         self.StartButton()
         self.Logo()
-        self.credits()
+        self.credit()
         self.Info_button()
 
-    def credits(self):
+    def credit(self):
 
         self.credits = turtle.clone()
         self.credits.pencolor('white')
@@ -74,6 +74,7 @@ class info_page():
         self.background()
         self.info()
         self.Info_button2()
+        self.Title()
 
     def background(self):
 
@@ -82,6 +83,15 @@ class info_page():
         self.background.penup()
         self.background.goto(0,0)
         self.background.shape('STARTMENU.gif')
+
+    def Title(self):
+
+        self.title = turtle.clone()
+        self.title.pencolor('white')
+        self.title.hideturtle()
+        self.title.penup()
+        self.title.goto(-130,230)
+        self.title.write('Introduction', font = ('Courier',20,'bold'))
 
     def info(self):
 
